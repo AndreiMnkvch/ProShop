@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import axios from 'axios'
-
-// import products from '../products'
 
 
-function ProductScreen() {
-  const params = useParams();
-  const [product, setProduct] = useState([])
+function ProductPage() {
 
-  useEffect(() => {
-    async function fetchProduct(){
-      
-      const { data } = await axios.get(`/api/products/${params.id}`);
-      
-      setProduct(data);
-    }
+  const { productId } = useParams();
+  const product = useSelector(state => state.products.products[productId -1])
 
-    fetchProduct()
-
-  }, [])
-  return (
+return (
+    
     <div>
       <Link to="/" className="btn btn-light my-3">Go back</Link>
       <Row>
@@ -77,10 +66,9 @@ function ProductScreen() {
           </Card>
         </Col>
       </Row>
-
         
     </div>
   )
-}
+  }
 
-export default ProductScreen
+export default ProductPage

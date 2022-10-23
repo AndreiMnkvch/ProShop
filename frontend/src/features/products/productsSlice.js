@@ -9,9 +9,12 @@ const initialState = {
 }
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()=> {
+
     const response = await axios.get('/api/products/')
     return response.data
 })
+
+
 
  const productsSlice = createSlice({
     name: 'products',
@@ -23,16 +26,14 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
           })
           .addCase(fetchProducts.fulfilled, (state, action) => {
             state.isLoading = false;
-            console.log({action})
-            // Add any fetched posts to the array
-            state.products = state.products.concat(action.payload)
+            state.products = action.payload
           })
           .addCase(fetchProducts.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.error.message
           })
-      }
-    })
+          }
+        })
     
 
 export default productsSlice.reducer
