@@ -1,9 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+from users.models import User 
 
 
 class Product(models.Model):
-    _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, blank=True)
     image = models.ImageField(blank=True)
@@ -22,7 +21,6 @@ class Product(models.Model):
 
 
 class Review(models.Model):
-    _id = models.AutoField(primary_key=True, editable=False)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, blank=True)
@@ -34,7 +32,6 @@ class Review(models.Model):
 
 
 class Order(models.Model):
-    _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     paymentMethod = models.CharField(max_length=200, blank=True)
     taxPrice = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
@@ -51,7 +48,6 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    _id = models.AutoField(primary_key=True, editable=False)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, blank=True)
@@ -64,7 +60,6 @@ class OrderItem(models.Model):
 
 
 class ShippingAddress(models.Model):
-    _id = models.AutoField(primary_key=True, editable=False)
     order = models.OneToOneField(Order, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=200, blank=True)
     city = models.CharField(max_length=200, blank=True)
@@ -74,7 +69,4 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return self.address
-
-
-
 

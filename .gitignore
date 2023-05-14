@@ -1,4 +1,6 @@
 **/__pycache__
 /.idea/
-/resources/vvv
-/venv/
+/resources
+/env/
+/backend/.env
+/backend/.vscode
