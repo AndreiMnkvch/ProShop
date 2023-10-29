@@ -4,3 +4,10 @@
 /env/
 /backend/.env
 /backend/.vscode
+**/__pycache__
+/.idea/
+/resources/vvv
+/env/
+**/.vscode
+**/node_modules/
+**/.env

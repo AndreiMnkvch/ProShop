@@ -5,7 +5,7 @@ from rest_framework import viewsets, exceptions
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from users.models import User
 from users.serializers import UserSerializer
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwner
 from .services.login_service import login_service
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -18,7 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             permission_classes = [IsAdminUser]
         else:
-            permission_classes = [IsOwnerOrReadOnly]
+            permission_classes = [IsOwner]
         return [permission() for permission in permission_classes]
 
     @action(methods=['post'], detail=False, permission_classes=[AllowAny])

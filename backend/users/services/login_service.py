@@ -28,5 +28,7 @@ def login_service(request):
     response.set_cookie(key='refreshtoken', value=refresh_token, httponly=True)
     response.data = {
         'access_token': access_token,
+        'username': user.username,
+        'id': user.id
     }
     return response
