@@ -9,37 +9,35 @@ import { fetchProducts } from '../features/products/productsSlice'
 
 function HomePage() {
 
-  const dispatch = useDispatch()
-  const products = useSelector((state) => state.products.products)
+const dispatch = useDispatch()
+const productsData = useSelector((state) => state.products)
 
-  const productsAreLoading = useSelector((state) => state.products.isLoading)
-  const error = useSelector((state) => state.products.error)
+const {error, isLoading, products} = productsData
 
-  useEffect(() => {
-    
-    if  (productsAreLoading) {
-      dispatch(fetchProducts());
+useEffect(() => {
+    if (isLoading) {
+        dispatch(fetchProducts());
     }
-  }, [ productsAreLoading, dispatch ]);
-  
-  return (
+}, [isLoading, dispatch]);
+
+return (
     <div>
-      <h1>Latest products </h1>
-        { productsAreLoading 
-        ? <Loader />
-          : error ? <Message variant='danger'> {error}</Message>
-            :
-            <Row>
-              { products.map(product => (
-                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                  <Product key={product._id} product={product} />
-                </Col>
-                ))
-              }
-            </Row>
+        <h1>Latest products </h1>
+        { isLoading
+            ? <Loader />
+            : error ? <Message variant='danger'> {error}</Message>
+                :
+                <Row>
+                    { products.map(product => (
+                        <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
+                            <Product key={product.id} product={product} />
+                        </Col>
+                    ))
+                }
+                </Row>
         }
         
     </div>
-  )
+)
 }
 export default HomePage

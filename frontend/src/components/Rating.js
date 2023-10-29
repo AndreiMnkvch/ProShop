@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Rating({value, text, color}) {
-  return (
+return (
     <div>
         <span>
             <i style={{ color }} className={
@@ -64,7 +64,7 @@ function Rating({value, text, color}) {
         </span>
         <span>{text && text}</span>
     </div>
-  )
+)
 }
 
 export default Rating
