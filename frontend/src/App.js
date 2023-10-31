@@ -9,6 +9,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import ShippingPage from './pages/ShippingPage';
+import PlaceOrderPage from './pages/PlaceOrderPage';
+import PaymentPage from './pages/PaymentPage';
 
 
 
@@ -28,6 +30,8 @@ return (
                     <Route path='/register/' element={<RegisterPage />}/>
                     <Route path='/profile/' element={<ProfilePage />}/>
                     <Route path='/shipping/' element={<ShippingPage />}/>
+                    <Route path='/placeorder/' element={<PlaceOrderPage />}/>
+                    <Route path='/payment/' element={<PaymentPage />}/>
                 </Routes>
             </Container> 
         </main>
