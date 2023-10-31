@@ -3,7 +3,8 @@ import axios from 'axios'
 
 const initialState = {
     cartItems: [],
-    shippingAddress: {}
+    shippingAddress: {},
+    paymentMethod: ''
 }
 
 const cartSlice = createSlice({
@@ -55,11 +56,19 @@ const cartSlice = createSlice({
                     shippingAddress: action.payload
                 }
             }
+        },
+        savePaymentMethod: {
+            reducer(state, action){
+                return {
+                    ...state,
+                    paymentMethod: action.payload,
+                }
+            }
         }
     }
 });
 export default cartSlice.reducer;
-export const {addItem, removeItem, saveShippingInfo} = cartSlice.actions;
+export const {addItem, removeItem, saveShippingInfo, savePaymentMethod} = cartSlice.actions;
 
 export const addToCart = createAsyncThunk(
     'cart/addToCart',
