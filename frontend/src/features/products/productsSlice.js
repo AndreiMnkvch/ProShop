@@ -9,31 +9,31 @@ const initialState = {
 }
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()=> {
-
-    const response = await axios.get('/api/products/')
+    const response = await axios.get('/api/v1/products/')
     return response.data
 })
 
 
-
- const productsSlice = createSlice({
+const productsSlice = createSlice({
     name: 'products',
     initialState,
     extraReducers(builder) {
         builder
-          .addCase(fetchProducts.pending, (state, action) => {
+            .addCase(fetchProducts.pending, (state, action) => {
             state.isLoading = true;
-          })
-          .addCase(fetchProducts.fulfilled, (state, action) => {
-            state.isLoading = false;
-            state.products = action.payload
-          })
-          .addCase(fetchProducts.rejected, (state, action) => {
-            state.isLoading = false;
-            state.error = action.error.message
-          })
-          }
-        })
+            state.error = null;
+            })
+            .addCase(fetchProducts.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.products = action.payload;
+                state.error = null;
+            })
+            .addCase(fetchProducts.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message;
+            })
+        }
+            })
     
 
-export default productsSlice.reducer
+export default productsSlice.reducer;

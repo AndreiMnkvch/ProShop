@@ -2,7 +2,7 @@ import React from 'react'
 import { Spinner } from 'react-bootstrap'
 
 function Loader(){
-  return (
+return (
     <Spinner
         animation="border"
         style={{
@@ -12,7 +12,7 @@ function Loader(){
             display: 'block'
         }}>
     </Spinner>  
-  )
+)
 }
 
 export default Loader
