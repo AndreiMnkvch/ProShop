@@ -33,15 +33,15 @@ class Review(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    paymentMethod = models.CharField(max_length=200, blank=True)
-    taxPrice = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
-    shippingPrice = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=2)
-    totalPrice = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=2)
-    isPaid = models.BooleanField(default=False)
-    paidAt = models.DateTimeField(null=True, blank=True)
-    isDelivered = models.BooleanField(default=False)
-    deliveredAt = models.DateTimeField(null=True, blank=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
+    payment_method = models.CharField(max_length=200, blank=True)
+    tax_price = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    shipping_price = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=2)
+    total_price = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
+    paid_at = models.DateTimeField(null=True, blank=True)
+    is_delivered = models.BooleanField(default=False)
+    delivered_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.createdAt)
@@ -63,9 +63,9 @@ class ShippingAddress(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=200, blank=True)
     city = models.CharField(max_length=200, blank=True)
-    postalCode = models.IntegerField(blank=True, null=True, default=0)
+    postal_code = models.IntegerField(blank=True, null=True, default=0)
     country = models.CharField(max_length=200, blank=True)
-    shippingPrice = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=2)
+    shipping_price = models.DecimalField(max_digits=7, blank=True, null=True, decimal_places=2)
 
     def __str__(self):
         return self.address
