@@ -18,23 +18,19 @@ function CartPage() {
     const cart = useSelector(state => state.cart)
     const {cartItems} = cart;
 
-    useEffect(()=>{
-
+    useEffect(()=> {
         if (productId){
         const dataToCard = {productId, qty} 
         dispatch(addToCart(dataToCard))
         
-        } else {
-        }
-        
-    }, [dispatch, productId, qty])
+    }}, [dispatch, productId, qty])
 
 const removeFromCartHandler = (id) => {
     dispatch(removeItem(id))
 }   
 
 const checkoutHandler = () => {
-    navigate("/login?redirect=shipping")
+    navigate('/shipping')
 }
 return (
     <Row>
