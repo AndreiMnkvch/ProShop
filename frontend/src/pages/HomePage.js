@@ -11,14 +11,13 @@ function HomePage() {
 
 const dispatch = useDispatch()
 const productsData = useSelector((state) => state.products)
-
 const {error, isLoading, products} = productsData
 
 useEffect(() => {
-    if (isLoading) {
+    if (products.length === 0 && !isLoading) {
         dispatch(fetchProducts());
     }
-}, [isLoading, dispatch]);
+}, [products, isLoading, dispatch]);
 
 return (
     <div>
