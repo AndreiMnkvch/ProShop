@@ -3,6 +3,8 @@ import axios from 'axios'
 
 const initialState = {
     cartItems: [],
+    isLoading: true,
+    error: null,
     shippingAddress: {},
     paymentMethod: ''
 }
@@ -65,6 +67,21 @@ const cartSlice = createSlice({
                 }
             }
         }
+    },
+    extraReducers(builder) {
+        builder
+        .addCase(addToCart.pending, (state, action) => {
+            state.isLoading = true;
+            state.error = null;
+        })
+        .addCase(addToCart.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.error = null;
+        })
+        .addCase(addToCart.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        })
     }
 });
 export default cartSlice.reducer;
@@ -76,16 +93,9 @@ export const addToCart = createAsyncThunk(
             {productId, qty},
             thunkAPI
         ) => {
-
-    try {
         const res = await axios.get(`/api/v1/products/${productId}`);
         const data = await res.data;
         if (data){
             const dataWithQuantity = {...data, qty} 
-            thunkAPI.dispatch(addItem(dataWithQuantity))
-        } 
-    
-    } catch(error) {
-        console.log(error.response.data)    
-    }
+            thunkAPI.dispatch(addItem(dataWithQuantity))}
 })
