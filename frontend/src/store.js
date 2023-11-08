@@ -7,6 +7,7 @@ import {combineReducers} from "redux"
 import loginUserReducer from "./features/loginUser/loginUserSlice"
 import profileDetailsReducer from "./features/profileDetails/profileDetailsSlice"
 import updateProfileDetailsReducer from "./features/updateProfileDetails/updateProfileDetailsSlice"
+import orderCreateReducer from "./features/orders/orderCreateSlice"
 import { 
     persistStore,
     persistReducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     registerUser: registerUserReducer,
     profileDetails: profileDetailsReducer,
     updateProfileDetails: updateProfileDetailsReducer,
+    orderCreate: orderCreateReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

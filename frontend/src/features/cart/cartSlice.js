@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const initialState = {
     cartItems: [],
-    isLoading: true,
+    isLoading: false,
     error: null,
     shippingAddress: {},
     paymentMethod: ''
@@ -37,7 +37,7 @@ const cartSlice = createSlice({
                     qty: data.qty,
                     product: data.id,
                     name: data.name,
-                    image: data.image,
+                    // image: data.image,
                     price: data.price,
                     countInStock: data.countInStock
             }
@@ -66,6 +66,18 @@ const cartSlice = createSlice({
                     paymentMethod: action.payload,
                 }
             }
+        },
+        clearCart: {
+            reducer(state, action){
+                return {
+                    ...state,
+                    cartItems: [],
+                    isLoading: false,
+                    error: null,
+                    shippingAddress: {},
+                    paymentMethod: ''
+                }
+            }
         }
     },
     extraReducers(builder) {
@@ -85,7 +97,7 @@ const cartSlice = createSlice({
     }
 });
 export default cartSlice.reducer;
-export const {addItem, removeItem, saveShippingInfo, savePaymentMethod} = cartSlice.actions;
+export const {addItem, removeItem, saveShippingInfo, savePaymentMethod, clearCart} = cartSlice.actions;
 
 export const addToCart = createAsyncThunk(
     'cart/addToCart',
