@@ -3,6 +3,7 @@ from rest_framework.fields import CurrentUserDefault
 
 from .models import Product
 from .models import Order, ShippingAddress, OrderItem
+from users.serializers import UserSerializer
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -35,12 +36,13 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     shipping_address = ShippingAddressSerializer()
-    user=serializers.PrimaryKeyRelatedField(read_only=True, default=CurrentUserDefault())
+    user=UserSerializer(default=CurrentUserDefault())
     order_items = OrderItemSerializer(many=True)
     
     class Meta:
         model = Order
         fields = [
+            'id',
             'shipping_address',
             'user',
             'payment_method',
