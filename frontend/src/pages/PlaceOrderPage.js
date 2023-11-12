@@ -18,12 +18,12 @@ function PlaceOrderPage() {
     const totalPrice = (Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice)).toFixed(2)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { isCreated, isLoading, error } = orderCreate
+    const { isCreated, isLoading, error, order } = orderCreate
 
 
     useEffect(() => {
         if (isCreated) {
-            navigate("/")
+            navigate(`/orders/${order.id}`)
             dispatch(clearOrderCreate())
 
         }

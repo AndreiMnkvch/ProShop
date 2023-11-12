@@ -62,4 +62,5 @@ export const createOrder = createAsyncThunk(
             );
             if (res.data){
                 thunkAPI.dispatch(clearCart())}
+            return res.data
 })

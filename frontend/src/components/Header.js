@@ -4,6 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {logout} from '../features/loginUser/loginUserSlice'
 import {profileDetailsReset} from '../features/profileDetails/profileDetailsSlice'
+import { clearOrdersListMy } from "../features/orders/ordersListMy";
 
 function Header() {
     const userLogin = useSelector((state) => state.loginUser);
@@ -13,6 +14,7 @@ function Header() {
     const logoutHandler = () => {
         dispatch(logout())
         dispatch(profileDetailsReset())
+        dispatch(clearOrdersListMy())
 };
 
 return (

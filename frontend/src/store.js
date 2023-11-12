@@ -8,6 +8,9 @@ import loginUserReducer from "./features/loginUser/loginUserSlice"
 import profileDetailsReducer from "./features/profileDetails/profileDetailsSlice"
 import updateProfileDetailsReducer from "./features/updateProfileDetails/updateProfileDetailsSlice"
 import orderCreateReducer from "./features/orders/orderCreateSlice"
+import orderDetailsReducer from "./features/orders/orderDetailsSlice"
+import orderPayReducer from "./features/orders/orderPaySlice"
+import ordersListReducer from "./features/orders/ordersListMy"
 import { 
     persistStore,
     persistReducer,
@@ -34,6 +37,9 @@ const rootReducer = combineReducers({
     profileDetails: profileDetailsReducer,
     updateProfileDetails: updateProfileDetailsReducer,
     orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
+    ordersList: ordersListReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

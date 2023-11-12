@@ -13,3 +13,4 @@
 **/.env
 backend/static/images/*
 backend/db.sqlite3
+./frontend/.env
