@@ -1,4 +1,5 @@
-import { Form, Button, Row, Col, FormGroup } from "react-bootstrap";
+import { Form, Button, Row, Col, FormGroup, Table } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
@@ -8,23 +9,28 @@ import { login } from "../features/loginUser/loginUserSlice";
 import { useSearchParams } from "react-router-dom";
 import { getProfileDetails, profileDetailsReset } from "../features/profileDetails/profileDetailsSlice";
 import { update, updateProfileReset } from "../features/updateProfileDetails/updateProfileDetailsSlice";
+import { getOrdersMy } from "../features/orders/ordersListMy";
 
 function ProfilePage() {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({ username: "", password: "", confirmPassword: "", email: ""});
-    
     const [searchParams] = useSearchParams();
     
     const loginUser = useSelector((state) => state.loginUser);
     const { userInfo, isSigningIn } = loginUser;
 
     const profileDetails = useSelector((state) => state.profileDetails);
+    const { profileInfo, error, isLoading } = profileDetails;
+    
     const updatedProfileDetails = useSelector((state) => state.updateProfileDetails);
     const { updatedProfileInfo, isUpdated, isUpdating } = updatedProfileDetails;
-    const { profileInfo, error, isLoading } = profileDetails;
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [message, setMessage] = useState('');
+    const ordersList = useSelector((state) => state.ordersList);
+    const { orders, isLoading:isLoadingOrders , error: errorOrders } = ordersList;
+
 
     useEffect(() => {
         if (!userInfo) {
@@ -38,6 +44,7 @@ function ProfilePage() {
             
             if (!profileInfo && !isUpdating) {
                 dispatch(getProfileDetails())
+                dispatch(getOrdersMy())
                 }
                 setFormData({"username": profileInfo.username, "email": profileInfo.email})
             }
@@ -135,6 +142,42 @@ function ProfilePage() {
                 </Col>
                 <Col md={9}>
                     <h2>My Orders</h2>
+                    {isLoadingOrders? 
+                    <Loader></Loader>:
+                    errorOrders?
+                    <Message type="danger">{errorOrders}</Message>:
+                    (
+                        <Table striped responsive className="table-sm">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Paid</th>
+                                    <th>Delivered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {orders.map(order => (
+                                    <tr key={order.id}>
+                                        <td>{order.id}</td>
+                                        <td>{order.created_at.substring(0,10)}</td>
+                                        <td>${order.total_price}</td>
+                                        <td>{order.is_paid? order.paid_at.substring(0,10): 
+                                            <i className="fas fa-times" style={{color: "red"}}></i>}
+                                        </td>
+                                        <td><LinkContainer to={`/orders/${order.id}/`}>
+                                                <Button className="btn-sm">Details</Button>
+                                            </LinkContainer>
+                                        </td>   
+                                    </tr>
+                                ))}
+
+                            </tbody>
+                        </Table>
+
+                    )
+                    }
                 </Col>
             </Row>
         </div>
