@@ -9,7 +9,7 @@ const initialState = {
     error: null,
 }
 
-const ordersListMy = createSlice({
+const ordersListMySlice = createSlice({
     name: 'ordersList', 
     initialState,
     reducers:{
@@ -34,8 +34,8 @@ const ordersListMy = createSlice({
         })
     }})
 
-export default ordersListMy.reducer;
-export const {clearOrdersListMy} = ordersListMy.actions;
+export default ordersListMySlice.reducer;
+export const {clearOrdersListMy} = ordersListMySlice.actions;
 
 
 export const getOrdersMy = createAsyncThunk(
