@@ -29,6 +29,7 @@ def login_service(request):
     response.data = {
         'access_token': access_token,
         'username': user.username,
-        'id': user.id
+        'id': user.id,
+        'is_staff': user.is_staff
     }
     return response
