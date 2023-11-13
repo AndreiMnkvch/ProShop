@@ -9,7 +9,7 @@ import { login } from "../features/loginUser/loginUserSlice";
 import { useSearchParams } from "react-router-dom";
 import { getProfileDetails, profileDetailsReset } from "../features/profileDetails/profileDetailsSlice";
 import { update, updateProfileReset } from "../features/updateProfileDetails/updateProfileDetailsSlice";
-import { getOrdersMy } from "../features/orders/ordersListMy";
+import { getOrdersMy } from "../features/orders/ordersListMySlice";
 
 function ProfilePage() {
 

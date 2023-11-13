@@ -12,6 +12,7 @@ import ShippingPage from './pages/ShippingPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import PaymentPage from './pages/PaymentPage';
+import UsersListPage from './pages/UsersListPage';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 
@@ -36,6 +37,7 @@ return (
                         <Route path='/login/' element={<LoginPage />}/>
                         <Route path='/register/' element={<RegisterPage />}/>
                         <Route path='/profile/' element={<ProfilePage />}/>
+                        <Route path='/admin/users/' element={<UsersListPage />}/>
                         <Route path='/shipping/' element={<ShippingPage />}/>
                         <Route path='/orders/:orderId' element={<OrderPage />}/>
                         <Route path='/placeorder/' element={<PlaceOrderPage />}/>

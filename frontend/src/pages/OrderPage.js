@@ -6,7 +6,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { getOrderDetails } from '../features/orders/orderDetailsSlice';
 import { payOrder, clearOrderPay } from '../features/orders/orderPaySlice';
-import {  PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import PayPalCheckoutButton from '../components/PayPalCheckoutButton'
 
 
@@ -36,7 +36,7 @@ function OrderPage() {
         itemsPrice = order.order_items.reduce((acc, item) => acc + item.price * item.qty, 0)
     }    
 
-    return (error || errorPay)? 
+    return error? 
     (<Message variant="danger">{error}</Message>) :
     (isLoading || !order)? (<Loader></Loader>) : 
             (
@@ -153,7 +153,8 @@ function OrderPage() {
                             <ListGroup.Item>
                                 {isLoadingPay && <Loader></Loader>}
                                 {isPending? <Loader></Loader>: 
-                                isRejected? <Message>Error of PayPal implementation</Message>:
+                                isRejected? <Message>Error of PayPal implementation.</Message>:
+
                                 (
                                     <PayPalCheckoutButton order={order} />
                                 )}

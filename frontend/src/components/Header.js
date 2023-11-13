@@ -4,7 +4,8 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {logout} from '../features/loginUser/loginUserSlice'
 import {profileDetailsReset} from '../features/profileDetails/profileDetailsSlice'
-import { clearOrdersListMy } from "../features/orders/ordersListMy";
+import { clearOrdersListMy } from "../features/orders/ordersListMySlice";
+import { usersListReset } from "../features/usersList/usersListSlice";
 
 function Header() {
     const userLogin = useSelector((state) => state.loginUser);
@@ -15,6 +16,7 @@ function Header() {
         dispatch(logout())
         dispatch(profileDetailsReset())
         dispatch(clearOrdersListMy())
+        dispatch(usersListReset())
 };
 
 return (
@@ -50,6 +52,24 @@ return (
                                 <i className="fas fa-user"></i>Login
                             </Nav.Link>
                             </LinkContainer>
+                        )}
+
+                        {userInfo && userInfo.is_staff && (
+                            <NavDropdown title="Admin" id="adminmenu">
+
+                                <LinkContainer to="/admin/users">
+                                    <NavDropdown.Item>Users</NavDropdown.Item>
+                                </LinkContainer>
+                                
+                                <LinkContainer to="/admin/products">
+                                    <NavDropdown.Item>Products</NavDropdown.Item>
+                                </LinkContainer>
+                                
+                                <LinkContainer to="/admin/orders">
+                                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                                </LinkContainer>
+
+                            </NavDropdown>
                         )}
                     </Nav>
                 </Navbar.Collapse>
