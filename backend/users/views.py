@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, exceptions
@@ -15,10 +16,12 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def get_permissions(self):
-        if self.action == 'list':
-            permission_classes = [IsAdminUser]
+        if self.action == 'create':
+                permission_classes = [AllowAny]
+        elif self.action == 'list':
+                permission_classes = [IsAdminUser]
         else:
-            permission_classes = [IsOwner]
+                permission_classes = [IsAdminUser|IsOwner]
         return [permission() for permission in permission_classes]
 
     @action(methods=['post'], detail=False, permission_classes=[AllowAny])

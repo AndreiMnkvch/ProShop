@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersList } from "../features/usersList/usersListSlice";
+import { deleteUser } from "../features/userDelete/userDeleteSlice";
 
 
 function UsersListPage() {
@@ -15,6 +16,10 @@ function UsersListPage() {
 
     const usersList = useSelector(state => state.usersList)
     const {users, error, isLoading} = usersList
+
+    const userDelete = useSelector(state => state.userDelete)
+    const {isDeleted, error: errorDelete, isLoading: isLoadingDelete} = userDelete
+
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
     
@@ -24,12 +29,14 @@ function UsersListPage() {
         } else {
             navigate("/login")
         }
-    }, [dispatch, navigate, userInfo])
+    }, [dispatch, navigate, userInfo, isDeleted])
 
-    const deleteHandler = (id) => (
-        console.log("Delete user: ", id)
-
-    )
+    const deleteHandler = (id) => {
+        if (window.confirm('Are you sure you want to delete this user?'))
+        {
+            dispatch(deleteUser(id))
+        }
+    }
 
     return (
         <div>
