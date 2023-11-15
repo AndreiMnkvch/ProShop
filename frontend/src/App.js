@@ -15,6 +15,7 @@ import PaymentPage from './pages/PaymentPage';
 import UsersListPage from './pages/UsersListPage';
 import EditUserPage from './pages/EditUserPage';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import ProductsListPage from './pages/ProductsListPage';
 
 
 function App() {
@@ -40,6 +41,7 @@ return (
                         <Route path='/profile/' element={<ProfilePage />}/>
                         <Route path='/admin/users/' element={<UsersListPage />}/>
                         <Route path='/admin/users/:userId/edit' element={<EditUserPage />}/>
+                        <Route path='/admin/products/' element={<ProductsListPage />}/>
                         <Route path='/shipping/' element={<ShippingPage />}/>
                         <Route path='/orders/:orderId' element={<OrderPage />}/>
                         <Route path='/placeorder/' element={<PlaceOrderPage />}/>
