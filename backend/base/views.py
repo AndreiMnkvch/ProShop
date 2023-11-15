@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response 
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
 from base.serializers import ProductSerializer
 from base.serializers import OrderSerializer
@@ -18,6 +18,15 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()    
     serializer_class = ProductSerializer
     permission_classes = (AllowAny,)
+
+    def get_permissions(self):
+        if self.action in ('create', 'destroy'):
+                permission_classes = [IsAdminUser]
+        elif self.action in ( 'list', 'retrieve'):
+                permission_classes = [AllowAny]
+        else:
+                permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
 
 
 class OrderViewSet(viewsets.ModelViewSet):
