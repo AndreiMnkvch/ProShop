@@ -10,14 +10,15 @@ import { fetchProducts } from '../features/products/productsSlice'
 function HomePage() {
 
 const dispatch = useDispatch()
+
 const productsData = useSelector((state) => state.products)
 const {error, isLoading, products} = productsData
 
 useEffect(() => {
-    if (products.length === 0 && !isLoading) {
+    if (products.length === 0 && !isLoading && !error) {
         dispatch(fetchProducts());
     }
-}, [products, isLoading, dispatch]);
+}, [products, isLoading, dispatch, error]);
 
 return (
     <div>

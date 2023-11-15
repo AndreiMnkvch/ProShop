@@ -14,6 +14,7 @@ import orderPayReducer from "./features/orders/orderPaySlice"
 import ordersListReducer from "./features/orders/ordersListMySlice"
 import usersListReducer from "./features/usersList/usersListSlice"
 import userDeleteReducer from "./features/userDelete/userDeleteSlice"
+import productDeleteReducer from "./features/products/productDeleteSlice"
 import { 
     persistStore,
     persistReducer,
@@ -46,6 +47,7 @@ const rootReducer = combineReducers({
     ordersList: ordersListReducer,
     usersList: usersListReducer,
     userDelete: userDeleteReducer,
+    productDelete: productDeleteReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

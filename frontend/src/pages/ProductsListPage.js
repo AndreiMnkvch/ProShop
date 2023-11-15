@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useDispatch, useSelector } from "react-redux";
 import {fetchProducts} from "../features/products/productsSlice"
+import {deleteProduct, productDeleteReset} from "../features/products/productDeleteSlice"
 
 
 function ProductsListPage() {
@@ -15,25 +16,33 @@ function ProductsListPage() {
 
     const productsInfo = useSelector(state => state.products)
     const {products, error, isLoading} = productsInfo
+    
+    const productDelete = useSelector(state => state.productDelete)
+    const {isDeleted, error:errorDelete, isLoading:isLoadingDelete} = productDelete
 
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
     
     useEffect(()=> {
+        if(isDeleted){
+            dispatch(fetchProducts())
+            dispatch(productDeleteReset())
+        }
+
         if (userInfo && userInfo.is_staff){
             dispatch(fetchProducts())
         } else {
             navigate("/login")
         }
-    }, [dispatch, navigate, userInfo])
+    }, [dispatch, navigate, userInfo, isDeleted])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure you want to delete this product?'))
         {
-            // delete product
+            dispatch(deleteProduct(id))
         }
     }
-    const createProductHandler = ()=>{
+    const createProductHandler = () => {
 
     }
 
@@ -48,8 +57,10 @@ function ProductsListPage() {
                         <i className="fas fa-plus"></i> Create Product
                     </Button>
                 </Col>
-
             </Row>
+
+            {isLoadingDelete && <Loader></Loader>}
+            {errorDelete && <Message variant="danger" >{errorDelete}</Message>}
             { isLoading?
             (<Loader></Loader>) :
             error?
