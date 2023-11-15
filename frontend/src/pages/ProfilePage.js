@@ -7,7 +7,7 @@ import Message from "../components/Message";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/loginUser/loginUserSlice";
 import { useSearchParams } from "react-router-dom";
-import { getProfileDetails, profileDetailsReset } from "../features/profileDetails/profileDetailsSlice";
+import { getMyProfileDetails, profileDetailsReset } from "../features/profileDetails/profileDetailsSlice";
 import { update, updateProfileReset } from "../features/updateProfileDetails/updateProfileDetailsSlice";
 import { getOrdersMy } from "../features/orders/ordersListMySlice";
 
@@ -36,16 +36,16 @@ function ProfilePage() {
         if (!userInfo) {
         navigate("/login");
         } else {
-            if (isUpdated && !isSigningIn){
+            if (isUpdated && !isSigningIn || userInfo.id !== profileInfo.id){
                 dispatch(profileDetailsReset())
                 dispatch(login({"username" : updatedProfileInfo.username, "password": formData.password}))
                 dispatch(updateProfileReset())
             }
             
             if (!profileInfo && !isUpdating) {
-                dispatch(getProfileDetails())
+                dispatch(getMyProfileDetails())
                 dispatch(getOrdersMy())
-                }
+            }
                 setFormData({"username": profileInfo.username, "email": profileInfo.email})
             }
         }

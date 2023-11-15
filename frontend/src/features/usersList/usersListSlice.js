@@ -33,8 +33,10 @@ const usersListSlice = createSlice({
     initialState,
     reducers: {
         usersListReset: (state) => {
-            state = initialState;
-        } 
+            state.error = null;
+            state.users = [];
+            state.isLoading = false;
+        }
     },
     extraReducers(builder) {
         builder

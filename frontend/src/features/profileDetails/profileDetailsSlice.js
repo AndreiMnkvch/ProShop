@@ -9,8 +9,8 @@ const initialState = {
     error: null,
 };  
 
-export const getProfileDetails = createAsyncThunk(
-    "profileDetails/getProfileDetails",
+export const getMyProfileDetails = createAsyncThunk(
+    "profileDetails/getMyProfileDetails",
     async (
     ) => {
     const state = store.getState()
@@ -28,6 +28,24 @@ export const getProfileDetails = createAsyncThunk(
 
     return response.data         
 });
+export const getProfileDetails = createAsyncThunk(
+    "profileDetails/getProfileDetails",
+    async (id) => {
+    const state = store.getState()
+    
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${state.loginUser.userInfo.access_token}`
+        }
+    };
+
+    const response = await axios.get(`/api/v1/users/${id}`,
+        config
+    );
+
+    return response.data         
+});
 
 
 const profileDetailsSlice = createSlice({
@@ -40,6 +58,19 @@ const profileDetailsSlice = createSlice({
     },
     extraReducers(builder) {
         builder
+        .addCase(getMyProfileDetails.pending, (state, action) => {
+            state.isLoading = true;
+            state.error = null;
+        })
+        .addCase(getMyProfileDetails.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.profileInfo = action.payload;
+            state.error = null;
+        })
+        .addCase(getMyProfileDetails.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        })
         .addCase(getProfileDetails.pending, (state, action) => {
             state.isLoading = true;
             state.error = null;
