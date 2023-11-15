@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, FormGroup } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
-import {getProfileDetails} from "../features/profileDetails/profileDetailsSlice"
+import {getProfileDetails, profileDetailsReset} from "../features/profileDetails/profileDetailsSlice"
+import { updateProfileDetailsByAdmin, updateProfileByAdminReset } from "../features/updateProfileDetailsAdmin/updateProfileDetailsAdminSlice";
 
 
 function EditUserPage() {
 
     const {userId} = useParams();
+    const navigate = useNavigate()
     
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -18,10 +20,19 @@ function EditUserPage() {
 
     const profileDetails = useSelector((state) => state.profileDetails);
     const { profileInfo, error, isLoading } = profileDetails;
+    
+    const updateProfileByAdmin = useSelector((state) => state.updateProfileByAdmin);
+    const { isUpdating, error:errorUpdate, isUpdated } = updateProfileByAdmin;
 
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if(isUpdated){
+            dispatch(updateProfileByAdminReset())
+            dispatch(profileDetailsReset())
+            navigate("/admin/users")
+        }
+
         if(!profileInfo.username || profileInfo.id !== Number(userId)){
             if(!isLoading){
                 dispatch(getProfileDetails(userId))
@@ -31,10 +42,18 @@ function EditUserPage() {
             setEmail(profileInfo.email)
             setIsAdmin(profileInfo.is_staff)
         }
-    }, [dispatch, profileInfo, userId, isLoading]);
+    }, [dispatch, profileInfo, userId, isLoading, navigate, isUpdated]);
 
     const submitHandler = (event) => {
         event.preventDefault();
+        dispatch(updateProfileDetailsByAdmin(
+            {
+                "id": userId,
+                "username": username,
+                "email": email,
+                "is_staff": isAdmin
+            }
+        ))
     };
 
     return (

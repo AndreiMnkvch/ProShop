@@ -7,15 +7,16 @@ const initialState = {
     updatedProfileInfo: "",
     isUpdating: false,
     error: null,
-    isUpdated: ''
+    isUpdated: false,
 };  
 
-export const updateMyProfile = createAsyncThunk(
-    "updateProfileDetails/update",
+export const updateProfileDetailsByAdmin = createAsyncThunk(
+    "updateProfileByAdmin/update",
     async (
         data,
     ) => {
     const state = store.getState()
+    const profileId = data.id
     
 
     const config = {
@@ -25,7 +26,7 @@ export const updateMyProfile = createAsyncThunk(
         }
     };
     const response = await axios.patch(
-        `/api/v1/users/${state.loginUser.userInfo.id}/`,
+        `/api/v1/users/${profileId}/`,
         data,    
         config
     );
@@ -34,11 +35,11 @@ export const updateMyProfile = createAsyncThunk(
 });
 
 
-const updateProfileDetailsSlice = createSlice({
-    name: "updateProfileDetails",
+const updateProfileByAdminSlice = createSlice({
+    name: "updateProfileByAdmin",
     initialState,
     reducers: {
-        updateProfileReset: (state) => {
+        updateProfileByAdminReset: (state) => {
             state.updatedProfileInfo = ''
             state.isUpdated = false;
             state.isUpdating = false;
@@ -46,21 +47,22 @@ const updateProfileDetailsSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-        .addCase(updateMyProfile.pending, (state, action) => {
+        .addCase(updateProfileDetailsByAdmin.pending, (state, action) => {
             state.isUpdating = true;
         })
-        .addCase(updateMyProfile.fulfilled, (state, action) => {
+        .addCase(updateProfileDetailsByAdmin.fulfilled, (state, action) => {
             state.isUpdating = false;
             state.isUpdated = true;
             state.updatedProfileInfo = action.payload;
         })
-        .addCase(updateMyProfile.rejected, (state, action) => {
+        .addCase(updateProfileDetailsByAdmin.rejected, (state, action) => {
             state.isUpdating = false;
             state.error = action.error.message;
         })
+
     },
 });
 
-export const {updateProfileReset} = updateProfileDetailsSlice.actions;
+export const {updateProfileByAdminReset} = updateProfileByAdminSlice.actions;
 
-export default updateProfileDetailsSlice.reducer;
+export default updateProfileByAdminSlice.reducer;

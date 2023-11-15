@@ -7,6 +7,7 @@ import {combineReducers} from "redux"
 import loginUserReducer from "./features/loginUser/loginUserSlice"
 import profileDetailsReducer from "./features/profileDetails/profileDetailsSlice"
 import updateProfileDetailsReducer from "./features/updateProfileDetails/updateProfileDetailsSlice"
+import updateProfileByAdminReducer from "./features/updateProfileDetailsAdmin/updateProfileDetailsAdminSlice"
 import orderCreateReducer from "./features/orders/orderCreateSlice"
 import orderDetailsReducer from "./features/orders/orderDetailsSlice"
 import orderPayReducer from "./features/orders/orderPaySlice"
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
     registerUser: registerUserReducer,
     profileDetails: profileDetailsReducer,
     updateProfileDetails: updateProfileDetailsReducer,
+    updateProfileByAdmin: updateProfileByAdminReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/loginUser/loginUserSlice";
 import { useSearchParams } from "react-router-dom";
 import { getMyProfileDetails, profileDetailsReset } from "../features/profileDetails/profileDetailsSlice";
-import { update, updateProfileReset } from "../features/updateProfileDetails/updateProfileDetailsSlice";
+import { updateMyProfile, updateProfileReset } from "../features/updateProfileDetails/updateProfileDetailsSlice";
 import { getOrdersMy } from "../features/orders/ordersListMySlice";
 
 function ProfilePage() {
@@ -56,7 +56,7 @@ function ProfilePage() {
         if (formData.password !== formData.confirmPassword){
             setMessage('Passwords do not match')
         }else {
-            dispatch(update(
+            dispatch(updateMyProfile(
                 {
                     "id": userInfo.id,
                     "username": formData.username,
