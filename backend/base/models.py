@@ -5,7 +5,7 @@ from users.models import User
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, blank=True)
-    image = models.ImageField(blank=True)
+    image = models.ImageField(blank=True, default="/sample.png")
     brand = models.CharField(max_length=200, blank=True)
     category = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)

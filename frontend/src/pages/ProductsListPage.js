@@ -7,6 +7,8 @@ import Message from "../components/Message";
 import { useDispatch, useSelector } from "react-redux";
 import {fetchProducts} from "../features/products/productsSlice"
 import {deleteProduct, productDeleteReset} from "../features/products/productDeleteSlice"
+import { productCreateReset, createProduct } from '../features/products/productCreateSlice'
+
 
 
 function ProductsListPage() {
@@ -19,11 +21,19 @@ function ProductsListPage() {
     
     const productDelete = useSelector(state => state.productDelete)
     const {isDeleted, error:errorDelete, isLoading:isLoadingDelete} = productDelete
+    
+    const productCreate = useSelector(state => state.productCreate)
+    const {isCreated, error:errorCreate, isLoading:isLoadingCreate, product: createdProduct} = productCreate
 
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
     
     useEffect(()=> {
+        if (isCreated){
+            navigate(`/admin/products/${createdProduct.id}/edit`)
+            dispatch(productCreateReset())
+        }
+
         if(isDeleted){
             dispatch(fetchProducts())
             dispatch(productDeleteReset())
@@ -34,7 +44,7 @@ function ProductsListPage() {
         } else {
             navigate("/login")
         }
-    }, [dispatch, navigate, userInfo, isDeleted])
+    }, [dispatch, navigate, userInfo, isDeleted, isCreated, createdProduct])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure you want to delete this product?'))
@@ -43,6 +53,7 @@ function ProductsListPage() {
         }
     }
     const createProductHandler = () => {
+        dispatch(createProduct())
 
     }
 
@@ -61,6 +72,10 @@ function ProductsListPage() {
 
             {isLoadingDelete && <Loader></Loader>}
             {errorDelete && <Message variant="danger" >{errorDelete}</Message>}
+
+            {isLoadingCreate && <Loader></Loader>}
+            {errorCreate && <Message variant="danger" >{errorCreate}</Message>}
+
             { isLoading?
             (<Loader></Loader>) :
             error?
