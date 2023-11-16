@@ -16,6 +16,8 @@ import usersListReducer from "./features/usersList/usersListSlice"
 import userDeleteReducer from "./features/userDelete/userDeleteSlice"
 import productDeleteReducer from "./features/products/productDeleteSlice"
 import productCreateReducer from "./features/products/productCreateSlice"
+import updateProductReducer from "./features/products/productUpdateSlice"
+import productDetailsReducer from "./features/products/productDetailsSlice"
 import { 
     persistStore,
     persistReducer,
@@ -36,6 +38,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     products: productsReducer,
+    productDetails: productDetailsReducer,
     cart: cartReducer,
     loginUser: loginUserReducer,
     registerUser: registerUserReducer,
@@ -49,6 +52,7 @@ const rootReducer = combineReducers({
     usersList: usersListReducer,
     userDelete: userDeleteReducer,
     productDelete: productDeleteReducer,
+    updateProduct: updateProductReducer,
     productCreate: productCreateReducer,
 })
 

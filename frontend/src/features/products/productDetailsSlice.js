@@ -3,32 +3,45 @@ import axios from 'axios'
 
 
 const initialState = {
-    productDetails: { reviews: [] },
-
+  productDetails: { reviews: [] },
+  product: null,
+  error: null,
+  isLoading: false,
 }
 
-export const fetchProductById = createAsyncThunk('products/fetchProductByID', async (id)=> {
+const config = {
+  headers: {
+      "Content-type": "application/json", 
+  },
+};
 
-    const response = await axios.get(`/api/products/${id}`)
+export const fetchProductById = createAsyncThunk('products/fetchProductByID', async (id)=> {
+    const response = await axios.get(
+      `/api/v1/products/${id}`,
+      config
+      )
     return response.data
   })
 
- const productDetailsSlice = createSlice({
+const productDetailsSlice = createSlice({
     name: 'productDetails',
     initialState,
     extraReducers(builder) {
         builder
-          .addCase(fetchProductById.pending, (state, action) => {
-            state.productDetails = action.payload
+          .addCase(fetchProductById.pending, (state) => {
+            state.isLoading = true;
           })
           .addCase(fetchProductById.fulfilled, (state, action) => {
-            state.productDetails = action.payload
+            state.product = action.payload;
+            state.error =  null;
+            state.isLoading = false;
           })
+          .addCase(fetchProductById.rejected, (state, action) => {
+          state.error = action.error.message;
+          })
+
           }
         })
     
-export const getProductDetails = (state) => {
-    return state.productDetails
-  }
   
 export default productDetailsSlice.reducer

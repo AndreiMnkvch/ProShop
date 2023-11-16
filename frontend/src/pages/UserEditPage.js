@@ -9,7 +9,7 @@ import {getProfileDetails, profileDetailsReset} from "../features/profileDetails
 import { updateProfileDetailsByAdmin, updateProfileByAdminReset } from "../features/updateProfileDetailsAdmin/updateProfileDetailsAdminSlice";
 
 
-function EditUserPage() {
+function UserEditPage() {
 
     const {userId} = useParams();
     const navigate = useNavigate()
@@ -108,4 +108,4 @@ function EditUserPage() {
     );
 }
 
-export default EditUserPage;
+export default UserEditPage;
