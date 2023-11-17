@@ -1,5 +1,5 @@
 import {React, useEffect, useState} from 'react'
-import { Button, Row, Col, ListGroup, Image, Card} from "react-bootstrap";
+import { Button, Row, Col, ListGroup, Image, Card, ListGroupItem} from "react-bootstrap";
 import {useNavigate, Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from '../components/Message';
@@ -8,6 +8,7 @@ import { getOrderDetails } from '../features/orders/orderDetailsSlice';
 import { payOrder, clearOrderPay } from '../features/orders/orderPaySlice';
 import { usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import PayPalCheckoutButton from '../components/PayPalCheckoutButton'
+import { clearOrderDeliver, deliverOrder } from '../features/orders/orderDeliverSlice';
 
 
 function OrderPage() {
@@ -23,14 +24,24 @@ function OrderPage() {
 
     const orderPay = useSelector(state => state.orderPay)
     const { isLoading:isLoadingPay, error: errorPay, success: successPay } = orderPay
+    
+    const orderDeliver = useSelector(state => state.orderDeliver)
+    const { isLoading:isLoadingDeliver, error: errorDeliver, isDelivered } = orderDeliver
+
+    const loginUser = useSelector(state => state.loginUser)
+    const {userInfo} = loginUser
 
     
-    
     useEffect(() => {
-        if (!order || successPay || order.id !== Number(orderId)){
+        if (!order || successPay || order.id !== Number(orderId) || isDelivered){
             dispatch(clearOrderPay())
+            dispatch(clearOrderDeliver())
             dispatch(getOrderDetails(orderId))}
-    }, [order, orderId, dispatch, successPay])
+    }, [order, orderId, dispatch, successPay, isDelivered])
+
+    const deliverHandler = () =>{
+        dispatch(deliverOrder(orderId))
+    } 
     
     if (order){
         itemsPrice = order.order_items.reduce((acc, item) => acc + item.price * item.qty, 0)
@@ -60,7 +71,7 @@ function OrderPage() {
                             {order.shipping_address.country} 
                         </p>
                             {order.is_delivered? 
-                            (<Message variant="success">Delivered on {order.delivered_at}</Message>):
+                            (<Message variant="success">Delivered on {order.delivered_at.substring(0,10)}</Message>):
                             (<Message variant="warning">Not delivered</Message>)
                             }
                     </ListGroup.Item>
@@ -70,7 +81,7 @@ function OrderPage() {
                             <strong>Method: </strong>
                             {order.payment_method}
                             {order.is_paid? 
-                            (<Message variant="success">Paid on {order.paid_at}</Message>):
+                            (<Message variant="success">Paid on {order.paid_at.substring(0,10)}</Message>):
                             (<Message variant="warning">Not paid</Message>)
                             }
                         </p>
@@ -160,9 +171,19 @@ function OrderPage() {
                                 )}
                             </ListGroup.Item>
                             }
-
-
                         </ListGroup>
+                        {isLoadingDeliver && <Loader />}
+                        {errorDeliver && <Message>{errorDeliver}</Message>}
+                        {userInfo && userInfo.is_staff && order.is_paid && !order.is_delivered && 
+                            <ListGroup.Item>
+                                <Button
+                                    type='button'
+                                    className='btn btn-block'
+                                    onClick={deliverHandler}
+                                >
+                                    Mark as Delivered
+                                </Button>
+                            </ListGroup.Item>}
                     </Card>
                 </Col>
                 </Row>

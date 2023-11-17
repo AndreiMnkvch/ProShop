@@ -70,3 +70,11 @@ class OrderViewSet(viewsets.ModelViewSet):
         order.paid_at = datetime.now()
         order.save()
         return Response("Succesfully updated to paid", status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['patch'], url_path="deliver", permission_classes=[IsAdminUser])
+    def update_order_to_delivered(self, request, pk=None):
+        order = self.get_object()
+        order.is_delivered = True
+        order.delivered_at = datetime.now()
+        order.save()
+        return Response("Succesfully updated to delivered", status=status.HTTP_200_OK)
