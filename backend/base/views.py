@@ -27,6 +27,18 @@ class ProductViewSet(viewsets.ModelViewSet):
         else:
                 permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
+    
+    @action(detail=True, methods=['patch'])
+    def upload_image(self, request, pk):
+        product = self.get_object()
+        try:
+            image = request.data['image']
+        except KeyError:
+            return Response("Image wasn't provided in the request", status=status.HTTP_400_BAD_REQUEST)
+        product.image = image
+        product.save()
+        return Response("imaage has been successfully uploaded", status=status.HTTP_200_OK)
+        
 
 
 class OrderViewSet(viewsets.ModelViewSet):

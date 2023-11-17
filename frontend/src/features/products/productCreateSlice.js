@@ -12,7 +12,7 @@ const initialState = {
 
 export const createProduct = createAsyncThunk(
     "createProduct/createProduct",
-    async () => {
+    async (product) => {
     const state = store.getState()
     const config = {
         headers: {
@@ -22,8 +22,7 @@ export const createProduct = createAsyncThunk(
     };
     const response = await axios.post(
         `/api/v1/products/`,
-        // product,
-        {},
+        product,
         config
     );
 

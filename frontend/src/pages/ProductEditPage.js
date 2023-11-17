@@ -7,7 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import { updateProduct, updateProductReset } from "../features/products/productUpdateSlice";
 import { fetchProductById } from "../features/products/productDetailsSlice";
-
+import axios from "axios";
+import FormData from 'form-data'
+import {store} from '../store'
 
 function ProductEditPage() {
 
@@ -21,6 +23,7 @@ function ProductEditPage() {
     const [category, setCategory] = useState("");
     const [countInStock, setCountInStock] = useState("");
     const [description, setDescription] = useState("");
+    const [uploading, setUploading] = useState(false);
 
     const productsData = useSelector((state) => state.productDetails)
     const {error, isLoading, product} = productsData
@@ -60,7 +63,7 @@ function ProductEditPage() {
                 "id": productId,
                 "name": name,
                 "price": price,
-                // "image": image,
+                "image": image,
                 "brand": brand,
                 "category": category,
                 "countInStock": countInStock,
@@ -68,6 +71,34 @@ function ProductEditPage() {
             }
         ))
     };
+    const uploadImageHandler = async(e) => {
+        setUploading(true)
+        const file = e.target.files[0]
+        const formData = new FormData()
+        formData.append("image", file)
+        const state = store.getState()
+
+
+        try{
+            const config = {
+                headers: {
+                    "Content-Type": 'multipart/form-data',
+                    "Authorization": `Bearer ${state.loginUser.userInfo.access_token}`
+                }
+            }
+
+            const {data} = await axios.patch(
+                `/api/v1/products/${productId}/`,
+                formData,
+                config
+                )
+            setUploading(false)
+            setImage(data)
+        }catch(error){
+            setUploading(false)
+        }
+
+    }
 
     return (
         <div>
@@ -105,13 +136,13 @@ function ProductEditPage() {
                 
                     <FormGroup controlId="image">
                         <Form.Label>Image</Form.Label>
+                        {uploading && <Loader></Loader>}
                         <Form.Control
-                            placeholder="Enter image"
-                            type="text"
-                            value={image}
+                            type="file"
                             name="image"
-                            onChange={(e)=> setImage(e.target.value)}
-                        ></Form.Control>
+                            label="Choose image"
+                            onChange={uploadImageHandler}>
+                        </Form.Control>
                     </FormGroup>
                     <FormGroup controlId="brand">
                         <Form.Label>Brand</Form.Label>
