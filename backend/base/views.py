@@ -42,17 +42,23 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
+    queryset = Order.objects.all()
+
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        if user.is_staff:
+            return Order.objects.all()
+        return Order.objects.filter(user=self.request.user)
 
     def list(self, request):
-        queryset = Order.objects.filter(user=request.user)
+        queryset = self.get_queryset(self)
         serializer = OrderSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, pk=None):
-        queryset = Order.objects.filter(user=request.user)
+        queryset = self.get_queryset(self)
         order = get_object_or_404(queryset, pk=pk)
         serializer = OrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_200_OK)

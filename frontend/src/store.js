@@ -12,6 +12,7 @@ import orderCreateReducer from "./features/orders/orderCreateSlice"
 import orderDetailsReducer from "./features/orders/orderDetailsSlice"
 import orderPayReducer from "./features/orders/orderPaySlice"
 import ordersListReducer from "./features/orders/ordersListMySlice"
+import ordersListAdminReducer from "./features/orders/ordersListAdminSlice"
 import usersListReducer from "./features/usersList/usersListSlice"
 import userDeleteReducer from "./features/userDelete/userDeleteSlice"
 import productDeleteReducer from "./features/products/productDeleteSlice"
@@ -49,6 +50,7 @@ const rootReducer = combineReducers({
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
     ordersList: ordersListReducer,
+    ordersListAdmin: ordersListAdminReducer,
     usersList: usersListReducer,
     userDelete: userDeleteReducer,
     productDelete: productDeleteReducer,
