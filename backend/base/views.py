@@ -8,10 +8,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response 
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
-from base.serializers import ProductSerializer
-from base.serializers import OrderSerializer
-from .models import Product
-from .models import Order
+from base.serializers import ProductSerializer, OrderSerializer, ReviewSerializer
+from base.models import Product, Order, Review
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -78,3 +76,42 @@ class OrderViewSet(viewsets.ModelViewSet):
         order.delivered_at = datetime.now()
         order.save()
         return Response("Succesfully updated to delivered", status=status.HTTP_200_OK)
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = ReviewSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = Review.objects.all()
+
+    def create(self, request):
+        data = self.request.data
+        user = self.request.user
+
+        try:
+            product_id = data.get("productId")
+        except KeyError:
+            return Response("No productId in request", status=status.HTTP_400_BAD_REQUEST)
+        product = Product.objects.get(id=product_id)
+        already_exists = Review.objects.filter(product=product).filter(user=user).exists()
+
+        if already_exists:
+            return Response("You have been reviewed this product yet", status=status.HTTP_400_BAD_REQUEST)
+        elif data['rating'] == 0:
+            return Response("Please select a rating", status=status.HTTP_400_BAD_REQUEST)
+        
+        else:
+            review = Review.objects.create(
+                product=product,    
+                user=user,
+                name=user.first_name,
+                rating=data['rating'],
+                comment=data['comment']
+            )
+            reviews = Review.objects.filter(product=product_id)
+            product.numReviews = reviews.count()            
+            total = 0
+            for i in reviews:
+                total += i.rating
+            product.rating = total/len(reviews)
+            product.save()
+            return Response("Review has been successfully added. Thanks", status=status.HTTP_201_CREATED)
