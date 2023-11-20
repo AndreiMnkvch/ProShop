@@ -6,6 +6,7 @@ import {logout} from '../features/loginUser/loginUserSlice'
 import {profileDetailsReset} from '../features/profileDetails/profileDetailsSlice'
 import { clearOrdersListMy } from "../features/orders/ordersListMySlice";
 import { usersListReset } from "../features/usersList/usersListSlice";
+import SearchBox from "./SearchBox"
 
 function Header() {
     const userLogin = useSelector((state) => state.loginUser);
@@ -29,6 +30,8 @@ return (
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
+                <SearchBox />
+                
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <LinkContainer to="/cart">

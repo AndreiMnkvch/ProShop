@@ -5,20 +5,26 @@ import Product from '../components/Product'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { fetchProducts } from '../features/products/productsSlice'
-
+import {resetQuery} from '../features/searchQuery/searchQueryslice'
 
 function HomePage() {
 
 const dispatch = useDispatch()
 
+const queryData = useSelector((state) => state.searchQuery)
+const {query: keyword} = queryData
+
 const productsData = useSelector((state) => state.products)
-const {error, isLoading, products} = productsData
+const {error, isLoading, products, isFulfilled} = productsData
 
 useEffect(() => {
-    if (products.length === 0 && !isLoading && !error) {
-        dispatch(fetchProducts());
+    if ((!isFulfilled && !isLoading) || keyword) {
+        dispatch(fetchProducts(keyword))
+        if (keyword){
+            dispatch(resetQuery())
+        }
     }
-}, [products, isLoading, dispatch, error]);
+}, [isLoading, dispatch, error, keyword, isFulfilled]);
 
 return (
     <div>

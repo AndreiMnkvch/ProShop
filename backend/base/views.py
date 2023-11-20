@@ -17,6 +17,14 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = (AllowAny,)
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.action == 'list':
+            keyword = self.request.query_params.get('keyword')
+            if keyword:
+                queryset = queryset.filter(name__icontains=keyword)
+        return queryset
+
     def get_permissions(self):
         if self.action in ('create', 'destroy'):
                 permission_classes = [IsAdminUser]
@@ -35,7 +43,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             return Response("Image wasn't provided in the request", status=status.HTTP_400_BAD_REQUEST)
         product.image = image
         product.save()
-        return Response("imaage has been successfully uploaded", status=status.HTTP_200_OK)
+        return Response("Image has been successfully uploaded", status=status.HTTP_200_OK)
         
 
 
