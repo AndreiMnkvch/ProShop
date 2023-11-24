@@ -112,7 +112,7 @@ REST_FRAMEWORK = {
         'backend.authentication.CustomAuthentication',
     ),  
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
+    'DEFAULT_PAGINATION_CLASS': 'backend.pagination.CustomPagination',
 }
 
 AUTH_USER_MODEL = 'users.User'

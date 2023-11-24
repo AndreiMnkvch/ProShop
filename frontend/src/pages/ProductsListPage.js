@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {fetchProducts} from "../features/products/productsSlice"
 import {deleteProduct, productDeleteReset} from "../features/products/productDeleteSlice"
 import { productCreateReset, createProduct } from '../features/products/productCreateSlice'
+import Paginate from '../components/Paginate'
+import { useSearchParams } from 'react-router-dom';
 
 
 
@@ -15,9 +17,11 @@ function ProductsListPage() {
     
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams();
+    const keyword = searchParams.get('keyword')
 
     const productsInfo = useSelector(state => state.products)
-    const {products, error, isLoading} = productsInfo
+    const {products, error, isLoading, lastPage, currentPage} = productsInfo
     
     const productDelete = useSelector(state => state.productDelete)
     const {isDeleted, error:errorDelete, isLoading:isLoadingDelete} = productDelete
@@ -35,16 +39,16 @@ function ProductsListPage() {
         }
 
         if(isDeleted){
-            dispatch(fetchProducts())
+            dispatch(fetchProducts(searchParams))
             dispatch(productDeleteReset())
         }
 
         if (userInfo && userInfo.is_staff){
-            dispatch(fetchProducts())
+            dispatch(fetchProducts(searchParams))
         } else {
             navigate("/login")
         }
-    }, [dispatch, navigate, userInfo, isDeleted, isCreated, createdProduct])
+    }, [dispatch, navigate, userInfo, isDeleted, isCreated, createdProduct, searchParams])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure you want to delete this product?'))
@@ -115,6 +119,12 @@ function ProductsListPage() {
                 </Table>
             )
             }
+            <Paginate 
+                lastPage={lastPage}
+                currentPage={currentPage}
+                keyword={keyword? keyword: ''}
+                isAdmin={true}
+            />
         </div>
     )
 }

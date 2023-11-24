@@ -7,6 +7,8 @@ const initialState = {
     isFulfilled: false,
     isLoading: false,
     error: null,
+    lastPage: null,
+    currentPage: null,
 }
 
 const productsSlice = createSlice({
@@ -21,7 +23,9 @@ const productsSlice = createSlice({
     .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isFulfilled = true;
-        state.products = action.payload;
+        state.lastPage = action.payload.lastPage;
+        state.currentPage = action.payload.current;
+        state.products = action.payload.results;
         state.error = null;
         console.log("fullfilled")
     })
@@ -36,9 +40,9 @@ const productsSlice = createSlice({
     
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
-    async (keyword) => {
+    async (params) => {
         console.log("fetch products: ")
-    const response = await axios.get(`/api/v1/products/?keyword=${keyword}`)
+    const response = await axios.get(`/api/v1/products`, { params })
     return response.data
 })
 

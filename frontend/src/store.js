@@ -21,7 +21,6 @@ import updateProductReducer from "./features/products/productUpdateSlice"
 import productDetailsReducer from "./features/products/productDetailsSlice"
 import orderDeliverReducer from "./features/orders/orderDeliverSlice"
 import productReviewCreateReducer from "./features/reviews/createProductReviewSlice"
-import searchQueryReducer from "./features/searchQuery/searchQueryslice"
 import { 
     persistStore,
     persistReducer,
@@ -61,7 +60,6 @@ const rootReducer = combineReducers({
     productCreate: productCreateReducer,
     orderDeliver:orderDeliverReducer,
     productReviewCreate: productReviewCreateReducer,
-    searchQuery: searchQueryReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
